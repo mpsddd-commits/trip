@@ -4,9 +4,9 @@
 #       Build & Test 단계의 `pip install` + `pip-audit` 실측으로 확정한다.
 
 fastapi==0.141.1
-uvicorn[standard]==0.34.0
-pydantic==2.10.4
-pydantic-settings==2.7.0
+uvicorn[standard]==0.52.3
+pydantic==2.13.4
+pydantic-settings==2.15.0
 SQLAlchemy==2.0.36
 httpx==0.28.1
 
