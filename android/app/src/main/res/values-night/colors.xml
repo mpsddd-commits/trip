@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 다크 모드. WebView 안의 u2 도 prefers-color-scheme 을 따르므로 배경만 맞춰 준다. -->
+<resources>
+    <color name="background">#FF0B1120</color>
+    <color name="surface">#FF1F2937</color>
+    <color name="text_primary">#FFF9FAFB</color>
+    <color name="text_secondary">#FF9CA3AF</color>
+</resources>

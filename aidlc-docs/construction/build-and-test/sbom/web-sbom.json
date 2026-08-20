@@ -1,0 +1,1231 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:79aaeeea-4025-42f9-81ea-49fe195cc348",
+  "metadata": {
+    "timestamp": "2026-08-18T06:47:02.504Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "npm",
+          "version": "11.17.0"
+        },
+        {
+          "type": "application",
+          "name": "cyclonedx-npm",
+          "group": "@cyclonedx",
+          "version": "6.0.1",
+          "author": "Jan Kowalleck",
+          "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-node-npm.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            },
+            {
+              "name": "cdx:npm:package:constraint:engine:npm",
+              "value": ">=9"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "cyclonedx-library",
+          "group": "@cyclonedx",
+          "version": "10.2.0",
+          "author": "Jan Kowalleck",
+          "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-javascript-library.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "trip-web",
+      "version": "0.1.0",
+      "bom-ref": "trip-web@0.1.0",
+      "description": "trip - 여행 일정 웹 프론트엔드 (u2-trip-web)",
+      "purl": "pkg:npm/trip-web@0.1.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:private",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": ""
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "core",
+      "group": "@dnd-kit",
+      "version": "6.3.1",
+      "bom-ref": "trip-web@0.1.0|@dnd-kit/core@6.3.1",
+      "author": "Claudéric Demers",
+      "description": "dnd kit – a lightweight React library for building performant and accessible drag and drop experiences",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40dnd-kit/core@6.3.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/clauderic/dnd-kit.git#packages/core",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@dnd-kit/core/-/core-6.3.1.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@dnd-kit/core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "sortable",
+      "group": "@dnd-kit",
+      "version": "10.0.0",
+      "bom-ref": "trip-web@0.1.0|@dnd-kit/sortable@10.0.0",
+      "author": "Claudéric Demers",
+      "description": "Official sortable preset and sensors for dnd kit",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40dnd-kit/sortable@10.0.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/clauderic/dnd-kit.git#packages/sortable",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@dnd-kit/sortable/-/sortable-10.0.0.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@dnd-kit/sortable"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "utilities",
+      "group": "@dnd-kit",
+      "version": "3.2.2",
+      "bom-ref": "trip-web@0.1.0|@dnd-kit/utilities@3.2.2",
+      "author": "Claudéric Demers",
+      "description": "Internal utilities to bee shared between `@dnd-kit` packages",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40dnd-kit/utilities@3.2.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/clauderic/dnd-kit.git#packages/utilities",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@dnd-kit/utilities/-/utilities-3.2.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@dnd-kit/utilities"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "query-async-storage-persister",
+      "group": "@tanstack",
+      "version": "5.69.2",
+      "bom-ref": "trip-web@0.1.0|@tanstack/query-async-storage-persister@5.69.2",
+      "author": "tannerlinsley",
+      "description": "A persister for asynchronous storages, to be used with TanStack/Query",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40tanstack/query-async-storage-persister@5.69.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/TanStack/query.git#packages/query-async-storage-persister",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://tanstack.com/query",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/TanStack/query/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@tanstack/query-async-storage-persister/-/query-async-storage-persister-5.69.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@tanstack/query-async-storage-persister"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-query-persist-client",
+      "group": "@tanstack",
+      "version": "5.69.2",
+      "bom-ref": "trip-web@0.1.0|@tanstack/react-query-persist-client@5.69.2",
+      "author": "tannerlinsley",
+      "description": "React bindings to work with persisters in TanStack/react-query",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40tanstack/react-query-persist-client@5.69.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/TanStack/query.git#packages/react-query-persist-client",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://tanstack.com/query",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/TanStack/query/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@tanstack/react-query-persist-client/-/react-query-persist-client-5.69.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@tanstack/react-query-persist-client"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-query",
+      "group": "@tanstack",
+      "version": "5.69.2",
+      "bom-ref": "trip-web@0.1.0|@tanstack/react-query@5.69.2",
+      "author": "tannerlinsley",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40tanstack/react-query@5.69.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/TanStack/query.git#packages/react-query",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://tanstack.com/query",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/TanStack/query/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.69.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@tanstack/react-query"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "idb-keyval",
+      "version": "6.2.1",
+      "bom-ref": "trip-web@0.1.0|idb-keyval@6.2.1",
+      "author": "Jake Archibald",
+      "description": "A super-simple-small keyval store built on top of IndexedDB",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/idb-keyval@6.2.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/jakearchibald/idb-keyval.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/jakearchibald/idb-keyval#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/jakearchibald/idb-keyval/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/idb-keyval/-/idb-keyval-6.2.1.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/idb-keyval"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-dom",
+      "version": "19.0.0",
+      "bom-ref": "trip-web@0.1.0|react-dom@19.0.0",
+      "description": "React package for working with the DOM.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react-dom@19.0.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/facebook/react.git#packages/react-dom",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://react.dev/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/facebook/react/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/react-dom/-/react-dom-19.0.0.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react-dom"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-router-dom",
+      "version": "7.18.2",
+      "bom-ref": "trip-web@0.1.0|react-router-dom@7.18.2",
+      "author": "Remix Software",
+      "description": "Declarative routing for React web applications",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react-router-dom@7.18.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/remix-run/react-router.git#packages/react-router-dom",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/remix-run/react-router#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/remix-run/react-router/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.18.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=20.0.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react-router-dom"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react",
+      "version": "19.0.0",
+      "bom-ref": "trip-web@0.1.0|react@19.0.0",
+      "description": "React is a JavaScript library for building user interfaces.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react@19.0.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/facebook/react.git#packages/react",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://react.dev/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/facebook/react/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/react/-/react-19.0.0.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=0.10.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "zustand",
+      "version": "5.0.2",
+      "bom-ref": "trip-web@0.1.0|zustand@5.0.2",
+      "author": "Paul Henschel",
+      "description": "🐻 Bear necessities for state management in React",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/zustand@5.0.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/pmndrs/zustand.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/pmndrs/zustand",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/pmndrs/zustand/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/zustand/-/zustand-5.0.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=12.20.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/zustand"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "accessibility",
+      "group": "@dnd-kit",
+      "version": "3.1.1",
+      "bom-ref": "trip-web@0.1.0|@dnd-kit/accessibility@3.1.1",
+      "author": "Claudéric Demers",
+      "description": "A generic toolkit to help with accessibility",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40dnd-kit/accessibility@3.1.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/clauderic/dnd-kit.git#packages/accessibility",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/clauderic/dnd-kit/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@dnd-kit/accessibility/-/accessibility-3.1.1.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@dnd-kit/accessibility"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tslib",
+      "version": "2.8.1",
+      "bom-ref": "trip-web@0.1.0|tslib@2.8.1",
+      "author": "Microsoft Corp.",
+      "description": "Runtime library for TypeScript helper functions",
+      "licenses": [
+        {
+          "license": {
+            "id": "0BSD",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/tslib@2.8.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/Microsoft/tslib.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://www.typescriptlang.org/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/Microsoft/TypeScript/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/tslib"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "query-persist-client-core",
+      "group": "@tanstack",
+      "version": "5.69.2",
+      "bom-ref": "trip-web@0.1.0|@tanstack/query-persist-client-core@5.69.2",
+      "author": "tannerlinsley",
+      "description": "Set of utilities for interacting with persisters, which can save your queryClient for later use",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40tanstack/query-persist-client-core@5.69.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/TanStack/query.git#packages/query-persist-client-core",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://tanstack.com/query",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/TanStack/query/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@tanstack/query-persist-client-core/-/query-persist-client-core-5.69.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@tanstack/query-persist-client-core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "query-core",
+      "group": "@tanstack",
+      "version": "5.69.2",
+      "bom-ref": "trip-web@0.1.0|@tanstack/query-core@5.69.2",
+      "author": "tannerlinsley",
+      "description": "The framework agnostic core that powers TanStack Query",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40tanstack/query-core@5.69.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/TanStack/query.git#packages/query-core",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://tanstack.com/query",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/TanStack/query/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.69.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@tanstack/query-core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "scheduler",
+      "version": "0.25.0",
+      "bom-ref": "trip-web@0.1.0|scheduler@0.25.0",
+      "description": "Cooperative scheduler for the browser environment.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/scheduler@0.25.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/facebook/react.git#packages/scheduler",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://react.dev/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/facebook/react/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/scheduler/-/scheduler-0.25.0.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/scheduler"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-router",
+      "version": "7.18.2",
+      "bom-ref": "trip-web@0.1.0|react-router@7.18.2",
+      "author": "Remix Software",
+      "description": "Declarative routing for React",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react-router@7.18.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/remix-run/react-router.git#packages/react-router",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/remix-run/react-router#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/remix-run/react-router/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/react-router/-/react-router-7.18.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=20.0.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react-router"
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "cookie",
+          "version": "1.1.1",
+          "bom-ref": "trip-web@0.1.0|react-router@7.18.2|cookie@1.1.1",
+          "author": "Roman Shtylman",
+          "description": "HTTP server cookie parsing and serialization",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/cookie@1.1.1",
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/jshttp/cookie.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/jshttp/cookie#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/jshttp/cookie/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/cookie/-/cookie-1.1.1.tgz",
+              "type": "distribution",
+              "comment": "as detected from npm-ls property \"resolved\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=18"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/react-router/node_modules/cookie"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react",
+      "group": "@types",
+      "version": "19.0.2",
+      "bom-ref": "trip-web@0.1.0|@types/react@19.0.2",
+      "description": "TypeScript definitions for react",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40types/react@19.0.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git#types/react",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@types/react/-/react-19.0.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/react"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "set-cookie-parser",
+      "version": "2.7.2",
+      "bom-ref": "trip-web@0.1.0|set-cookie-parser@2.7.2",
+      "author": "Nathan Friedly",
+      "description": "Parses set-cookie headers into objects",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/set-cookie-parser@2.7.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/nfriedly/set-cookie-parser.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/nfriedly/set-cookie-parser",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/nfriedly/set-cookie-parser/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/set-cookie-parser/-/set-cookie-parser-2.7.2.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/set-cookie-parser"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "csstype",
+      "version": "3.2.3",
+      "bom-ref": "trip-web@0.1.0|csstype@3.2.3",
+      "author": "Fredrik Nicol",
+      "description": "Strict TypeScript and Flow types for style based on MDN data",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/csstype@3.2.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/frenic/csstype.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/frenic/csstype#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/frenic/csstype/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
+          "type": "distribution",
+          "comment": "as detected from npm-ls property \"resolved\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/csstype"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "trip-web@0.1.0",
+      "dependsOn": [
+        "trip-web@0.1.0|@dnd-kit/core@6.3.1",
+        "trip-web@0.1.0|@dnd-kit/sortable@10.0.0",
+        "trip-web@0.1.0|@dnd-kit/utilities@3.2.2",
+        "trip-web@0.1.0|@tanstack/query-async-storage-persister@5.69.2",
+        "trip-web@0.1.0|@tanstack/react-query-persist-client@5.69.2",
+        "trip-web@0.1.0|@tanstack/react-query@5.69.2",
+        "trip-web@0.1.0|idb-keyval@6.2.1",
+        "trip-web@0.1.0|react-dom@19.0.0",
+        "trip-web@0.1.0|react-router-dom@7.18.2",
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|zustand@5.0.2"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@dnd-kit/core@6.3.1",
+      "dependsOn": [
+        "trip-web@0.1.0|@dnd-kit/accessibility@3.1.1",
+        "trip-web@0.1.0|@dnd-kit/utilities@3.2.2",
+        "trip-web@0.1.0|react-dom@19.0.0",
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|tslib@2.8.1"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@dnd-kit/sortable@10.0.0",
+      "dependsOn": [
+        "trip-web@0.1.0|@dnd-kit/core@6.3.1",
+        "trip-web@0.1.0|@dnd-kit/utilities@3.2.2",
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|tslib@2.8.1"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@dnd-kit/utilities@3.2.2",
+      "dependsOn": [
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|tslib@2.8.1"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@tanstack/query-async-storage-persister@5.69.2",
+      "dependsOn": [
+        "trip-web@0.1.0|@tanstack/query-persist-client-core@5.69.2"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@tanstack/react-query-persist-client@5.69.2",
+      "dependsOn": [
+        "trip-web@0.1.0|@tanstack/query-persist-client-core@5.69.2",
+        "trip-web@0.1.0|@tanstack/react-query@5.69.2",
+        "trip-web@0.1.0|react@19.0.0"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@tanstack/react-query@5.69.2",
+      "dependsOn": [
+        "trip-web@0.1.0|@tanstack/query-core@5.69.2",
+        "trip-web@0.1.0|react@19.0.0"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|idb-keyval@6.2.1"
+    },
+    {
+      "ref": "trip-web@0.1.0|react-dom@19.0.0",
+      "dependsOn": [
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|scheduler@0.25.0"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|react-router-dom@7.18.2",
+      "dependsOn": [
+        "trip-web@0.1.0|react-dom@19.0.0",
+        "trip-web@0.1.0|react-router@7.18.2",
+        "trip-web@0.1.0|react@19.0.0"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|react@19.0.0"
+    },
+    {
+      "ref": "trip-web@0.1.0|zustand@5.0.2",
+      "dependsOn": [
+        "trip-web@0.1.0|@types/react@19.0.2",
+        "trip-web@0.1.0|react@19.0.0"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@dnd-kit/accessibility@3.1.1",
+      "dependsOn": [
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|tslib@2.8.1"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|tslib@2.8.1"
+    },
+    {
+      "ref": "trip-web@0.1.0|@tanstack/query-persist-client-core@5.69.2",
+      "dependsOn": [
+        "trip-web@0.1.0|@tanstack/query-core@5.69.2"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|@tanstack/query-core@5.69.2"
+    },
+    {
+      "ref": "trip-web@0.1.0|scheduler@0.25.0"
+    },
+    {
+      "ref": "trip-web@0.1.0|react-router@7.18.2",
+      "dependsOn": [
+        "trip-web@0.1.0|react-router@7.18.2|cookie@1.1.1",
+        "trip-web@0.1.0|react-dom@19.0.0",
+        "trip-web@0.1.0|react@19.0.0",
+        "trip-web@0.1.0|set-cookie-parser@2.7.2"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|react-router@7.18.2|cookie@1.1.1"
+    },
+    {
+      "ref": "trip-web@0.1.0|@types/react@19.0.2",
+      "dependsOn": [
+        "trip-web@0.1.0|csstype@3.2.3"
+      ]
+    },
+    {
+      "ref": "trip-web@0.1.0|set-cookie-parser@2.7.2"
+    },
+    {
+      "ref": "trip-web@0.1.0|csstype@3.2.3"
+    }
+  ]
+}

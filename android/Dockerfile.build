@@ -1,0 +1,86 @@
+# 안드로이드 APK 컨테이너 빌드 (ID-16 / UD-13 / CON-6)
+#
+# 🔴 이 이미지는 **docker-compose 에 포함되지 않는다.**
+#    포함하면 `docker compose up` 할 때마다 수 GB 의 Android SDK 를 내려받게 된다.
+#
+# ⚠️ 이 빌드는 **컴파일·패키징·단위 테스트까지만** 검증한다.
+#    WebView 로딩 · 네이버지도 인텐트 · 다운로드 · 위치 권한은 실기기 확인이 필요하다.
+#    README 의 "실기기 확인 체크리스트 8항목"을 반드시 함께 보라 (ASM-4).
+#
+# 사용법:
+#    docker build -f android/Dockerfile.build -t trip-android-build android/
+#    docker run --rm -v "${PWD}/android/out:/out" trip-android-build
+#    → android/out/app-debug.apk
+#
+#    실기기용:
+#    docker run --rm -v "${PWD}/android/out:/out" \
+#      -e BASE_URL=http://192.168.0.10:8200 -e CLEARTEXT_HOST=192.168.0.10 \
+#      trip-android-build
+
+# ID-20 / SEC-10 — 다이제스트 고정 (Build & Test I-2 에서 실측).
+#   갱신 절차: docker buildx imagetools inspect eclipse-temurin:17-jdk-noble --format '{{.Manifest.Digest}}'
+FROM eclipse-temurin:17-jdk-noble@sha256:f8857ccb2fe800666293d0da2526d162774e1314adfffb274fbadb877679d7a1 AS android-build
+
+ENV ANDROID_SDK_ROOT=/opt/android-sdk \
+    ANDROID_HOME=/opt/android-sdk \
+    DEBIAN_FRONTEND=noninteractive \
+    GRADLE_USER_HOME=/opt/gradle-cache \
+    GRADLE_VERSION=8.11.1
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends unzip curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+# --- Gradle -----------------------------------------------------------------
+# 🔴 gradle-wrapper.jar 는 바이너리라 저장소에 두지 않았다 (Code Generation 고지 1).
+#    여기서 Gradle 배포판을 직접 설치하고, 필요하면 컨테이너 안에서 래퍼를 만든다.
+RUN curl -fsSL -o /tmp/gradle.zip \
+      "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+ && unzip -q /tmp/gradle.zip -d /opt \
+ && rm /tmp/gradle.zip
+ENV PATH="/opt/gradle-${GRADLE_VERSION}/bin:${PATH}"
+
+# --- Android SDK ------------------------------------------------------------
+ARG CMDLINE_TOOLS_VERSION=11076708
+RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" \
+ && curl -fsSL -o /tmp/tools.zip \
+      "https://dl.google.com/android/repository/commandlinetools-linux-${CMDLINE_TOOLS_VERSION}_latest.zip" \
+ && unzip -q /tmp/tools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools" \
+ && mv "${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools" "${ANDROID_SDK_ROOT}/cmdline-tools/latest" \
+ && rm /tmp/tools.zip
+
+ENV PATH="${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools"
+
+ARG COMPILE_SDK=35
+ARG BUILD_TOOLS=35.0.0
+RUN yes | sdkmanager --licenses > /dev/null \
+ && sdkmanager --install \
+      "platform-tools" \
+      "platforms;android-${COMPILE_SDK}" \
+      "build-tools;${BUILD_TOOLS}" > /dev/null
+
+WORKDIR /workspace
+COPY . /workspace
+
+# 의존성을 미리 받아 둔다 (레이어 캐시).
+RUN gradle --no-daemon --offline tasks > /dev/null 2>&1 || true
+
+VOLUME ["/out"]
+
+# BASE_URL 을 주지 않으면 gradle.properties 의 debug 기본값(10.0.2.2)이 쓰인다.
+ENV BASE_URL="" CLEARTEXT_HOST=""
+
+CMD sh -c '\
+    set -e; \
+    ARGS=""; \
+    [ -n "$BASE_URL" ] && ARGS="$ARGS -PbaseUrl=$BASE_URL"; \
+    [ -n "$CLEARTEXT_HOST" ] && ARGS="$ARGS -PcleartextHost=$CLEARTEXT_HOST"; \
+    echo "== 단위 테스트 =="; \
+    gradle --no-daemon testDebugUnitTest $ARGS; \
+    echo "== APK 빌드 =="; \
+    gradle --no-daemon assembleDebug $ARGS; \
+    mkdir -p /out; \
+    cp app/build/outputs/apk/debug/app-debug.apk /out/app-debug.apk; \
+    cp -r app/build/reports/tests/testDebugUnitTest /out/test-report 2>/dev/null || true; \
+    echo "빌드 성공: /out/app-debug.apk"; \
+'

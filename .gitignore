@@ -1,0 +1,55 @@
+# 인증 정보 (SEC-12 — 절대 커밋 금지)
+.env
+.env.local
+*.pem
+*.key
+
+# 데이터 볼륨 (ID-9 — WAL 파일 포함)
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/backup-*.db
+
+# 로그 볼륨
+logs/*.jsonl
+logs/*.log
+logs/*.jsonl.*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.hypothesis/
+.venv/
+venv/
+*.egg-info/
+
+# Node / 웹 빌드 산출물
+node_modules/
+web/dist/
+.vite/
+
+# 안드로이드
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/out/
+*.apk
+*.aab
+
+# 산출물
+sbom.json
+
+# 에디터
+.vscode/
+.idea/
+.DS_Store
+
+# =============================================================================
+# ⚠️ 커밋 대상 (제외하지 말 것)
+# =============================================================================
+# web/src/shared/api/generated.ts
+#   UD-3 — OpenAPI 에서 생성한 TS 타입. 이 파일이 없으면 Docker 웹 빌드 스테이지가
+#   백엔드 기동을 요구해 **빌드가 순환**합니다. 반드시 커밋하세요.
+!web/src/shared/api/generated.ts

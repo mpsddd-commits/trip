@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ABR-43 — 네이티브 UI 는 여기까지다: WebView · 진행 표시 · 오류 화면.
+    툴바·탭·설정 화면을 만들지 않는다. u2 와 UI 를 이중 관리하면 반드시 어긋난다.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fitsSystemWindows="true">
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:max="100"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- A6 OfflineScreen — 최초 로드 실패에서만 보인다 (ABR-41) -->
+    <LinearLayout
+        android:id="@+id/errorPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:background="@color/background"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/errorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:text="@string/error_offline_title" />
+
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:textSize="15sp"
+            android:textColor="@color/text_secondary"
+            android:text="@string/error_offline_body" />
+
+        <!--
+            ABR-40 — 접속 주소를 보여준다.
+            최초 로드 실패의 1순위 원인이 주소 오설정이다. 감추면 사용자가 원인을 알 수 없다.
+        -->
+        <TextView
+            android:id="@+id/errorAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="12dp"
+            android:gravity="center"
+            android:background="@color/surface"
+            android:fontFamily="monospace"
+            android:textSize="13sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_secondary"
+/>
+
+        <Button
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:minWidth="160dp"
+            android:text="@string/error_retry" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

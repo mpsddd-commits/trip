@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>trip — 여행 일정</title>
+    <meta name="description" content="AI가 만든 여행 일정을 시간표와 지도로 확인하고 네이버지도로 길찾기" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!--
+      🔴 SEC-04 — 인라인 스크립트를 두지 않는다.
+         CSP 의 `script-src` 에 'unsafe-inline' 을 허용하지 않았으므로,
+         여기에 <script> 블록을 추가하면 브라우저가 실행을 차단한다.
+         (지도 SDK 키도 인라인으로 심지 않는다 — GET /api/config 로 받는다, A-1)
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

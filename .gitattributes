@@ -1,0 +1,70 @@
+# 줄바꿈을 저장소 차원에서 고정합니다.
+#
+# 🔴 왜 필요한가:
+#    이 설정이 없으면 줄바꿈 처리가 **각자의 git 설정(core.autocrlf)에 의존**합니다.
+#    설정이 다른 사람이 기여하면 CRLF 가 섞여 들어오고, 셸 스크립트가 CRLF 가 되면
+#    리눅스·컨테이너에서 `bad interpreter: /usr/bin/env sh^M` 로 죽습니다.
+#    실행하기 전에는 드러나지 않습니다.
+
+# 기본: 텍스트로 판단되면 저장소에 LF 로 정규화
+* text=auto
+
+# --- 반드시 LF 여야 하는 것 -------------------------------------------------
+# 리눅스/컨테이너에서 실행되거나 읽힙니다.
+*.sh            text eol=lf
+*.py            text eol=lf
+*.kt            text eol=lf
+*.kts           text eol=lf
+*.properties    text eol=lf
+*.toml          text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+Dockerfile      text eol=lf
+Dockerfile.*    text eol=lf
+.dockerignore   text eol=lf
+.env.example    text eol=lf
+gradlew         text eol=lf
+
+# --- Windows 에서만 실행되는 것 ---------------------------------------------
+# ⚠️ PowerShell 5.1 은 한글 주석을 읽으려면 UTF-8 BOM 이 필요합니다.
+#    BOM 은 git 이 건드리지 않으므로 그대로 보존됩니다.
+*.ps1           text eol=crlf
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+gradlew.bat     text eol=crlf
+
+# --- 웹/문서 ---------------------------------------------------------------
+*.ts            text eol=lf
+*.tsx           text eol=lf
+*.js            text eol=lf
+*.json          text eol=lf
+*.css           text eol=lf
+*.html          text eol=lf
+*.md            text eol=lf
+*.xml           text eol=lf
+
+# --- 라이선스 원문 (한 글자도 바뀌면 안 됨) ---------------------------------
+# GPL 은 verbatim 배포가 조건입니다. 줄바꿈 변환으로 파일이 달라지지 않게 고정합니다.
+LICENSE         text eol=lf
+COPYING         text eol=lf
+
+# --- 바이너리 (변환 금지) ---------------------------------------------------
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.ico           binary
+*.webp          binary
+*.woff          binary
+*.woff2         binary
+*.ttf           binary
+*.jar           binary
+*.apk           binary
+*.aab           binary
+*.db            binary
+*.bin           binary
+*.keystore      binary
+
+# --- 언어 통계에서 제외 (GitHub Linguist) -----------------------------------
+# 문서가 코드보다 많아 저장소 언어가 Markdown 으로 표시되는 것을 막습니다.
+aidlc-docs/**   linguist-documentation

@@ -1,0 +1,2552 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "trip API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/trips": {
+      "post": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Create Trip",
+        "operationId": "create_trip_api_trips_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripSpecIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}": {
+      "get": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Get Trip",
+        "operationId": "get_trip_api_trips__trip_id__get",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Patch Trip",
+        "operationId": "patch_trip_api_trips__trip_id__patch",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripMetaPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Delete Trip",
+        "operationId": "delete_trip_api_trips__trip_id__delete",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/days/{day_index}/items": {
+      "post": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Add Item",
+        "operationId": "add_item_api_trips__trip_id__days__day_index__items_post",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "day_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day Index"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/items/{item_id}": {
+      "delete": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Remove Item",
+        "operationId": "remove_item_api_trips__trip_id__items__item_id__delete",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Patch Item",
+        "operationId": "patch_item_api_trips__trip_id__items__item_id__patch",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/days/{day_index}/order": {
+      "put": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Reorder",
+        "operationId": "reorder_api_trips__trip_id__days__day_index__order_put",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "day_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day Index"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/days/{day_index}/optimize": {
+      "post": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Optimize Day",
+        "description": "FR-8 — 순서 최적화. 캐시가 적중하면 외부 호출 없이 끝난다 (BR-29).",
+        "operationId": "optimize_day_api_trips__trip_id__days__day_index__optimize_post",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "day_index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day Index"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OptimizeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/items/{item_id}/opening-hours": {
+      "put": {
+        "tags": [
+          "trips"
+        ],
+        "summary": "Set Opening Hours",
+        "description": "BR-35 — 영업시간은 **여기서만** 채워진다. 외부 API·LLM 경로는 없다.",
+        "operationId": "set_opening_hours_api_trips__trip_id__items__item_id__opening_hours_put",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpeningHoursIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/generate": {
+      "post": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Start Generation",
+        "description": "일정 생성을 시작하고 **즉시** job_id 를 반환한다.\n\nNFR-1 — 최대 60초가 걸리므로 HTTP 응답을 붙잡지 않는다.",
+        "operationId": "start_generation_api_trips__trip_id__generate_post",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripSpecIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobAccepted"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "generation"
+        ],
+        "summary": "Get Job",
+        "description": "진행 상태 폴링 (WF-2 6단계).\n\n`partial` 은 실패가 아니라 품질 저하다 (DD-23). 프론트는 이를 구체적으로\n알려야 한다 — \"3곳을 찾지 못했습니다\", \"이동시간이 추정치입니다\".",
+        "operationId": "get_job_api_jobs__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/places/search": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "Search Places",
+        "description": "FR-6 — 지역검색은 1회 5건이 상한이라 `page` 로 이어 받는다 (CON-2).",
+        "operationId": "search_places_api_places_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "title": "Q"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedPlacesOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/places/content": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "Place Content",
+        "description": "FR-20·21 — 추천 콘텐츠.\n\nBR-40 — 근거 블로그가 3건 미만이면 `highlights` 는 빈 목록이다.",
+        "operationId": "place_content_api_places_content_get",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaceContentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/places/suggestions": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "Suggestions",
+        "description": "FR-22 — 주변 미포함 추천. 이미 담긴 장소는 제외한다.",
+        "operationId": "suggestions_api_places_suggestions_get",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "title": "Trip Id"
+            }
+          },
+          {
+            "name": "day_index",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "title": "Day Index"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50,
+              "default": "맛집",
+              "title": "Keyword"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 100,
+              "default": 1500,
+              "title": "Radius"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/share": {
+      "post": {
+        "tags": [
+          "share"
+        ],
+        "summary": "Issue Share Token",
+        "description": "BR-36 — 암호학적 난수 43자. `trip_id` 와 수학적 관계가 없다.",
+        "operationId": "issue_share_token_api_trips__trip_id__share_post",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareTokenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "share"
+        ],
+        "summary": "Revoke Share Token",
+        "description": "BR-38 — 폐기 시 기존 링크가 즉시 무효화된다.",
+        "operationId": "revoke_share_token_api_trips__trip_id__share_delete",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shared/{share_token}": {
+      "get": {
+        "tags": [
+          "share"
+        ],
+        "summary": "Get Shared Trip",
+        "description": "BR-37 — 편집 연산이 정의되지 않은 타입을 반환한다.\n\n응답에 `share_token` 을 포함하지 않는다 — 열람자가 토큰을 재발급·폐기할\n권한이 없기 때문이다.",
+        "operationId": "get_shared_trip_api_shared__share_token__get",
+        "parameters": [
+          {
+            "name": "share_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 64,
+              "title": "Share Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadOnlyTripOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trips/{trip_id}/export.ics": {
+      "get": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Export Ics",
+        "description": "일정을 iCalendar 로 내보낸다.\n\nBR-46 — `travel_mode`·`warnings`·`category`·`phone` 은 VEVENT 표준 필드가\n없어 손실된다(X- 속성으로만 내보내고 되읽지 않는다).",
+        "operationId": "export_ics_api_trips__trip_id__export_ics_get",
+        "parameters": [
+          {
+            "name": "trip_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trip Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config": {
+      "get": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Get Runtime Config",
+        "description": "프론트가 부팅 시 1회 조회하는 런타임 설정 (WBR-32).\n\n외부 API 를 호출하지 않으므로 쿼터를 소모하지 않는다.",
+        "operationId": "get_runtime_config_api_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeConfigOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Liveness",
+        "description": "프로세스 응답 여부만 확인한다. Docker 헬스체크 대상 (ID-13).",
+        "operationId": "liveness_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Readiness",
+        "description": "DB 접근 + 목 모드 현황 + 쿼터 + 서킷 상태.\n\nFR-33 — 프론트는 `modes` 를 보고 \"데모 데이터\" 배너를 띄운다.",
+        "operationId": "readiness_api_health_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlogRefOut": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "link": {
+            "type": "string",
+            "title": "Link"
+          },
+          "blogger_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blogger Name"
+          },
+          "post_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "link"
+        ],
+        "title": "BlogRefOut"
+      },
+      "BudgetLevel": {
+        "type": "string",
+        "enum": [
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "title": "BudgetLevel"
+      },
+      "CoordinateOut": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lng": {
+            "type": "number",
+            "title": "Lng"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lng"
+        ],
+        "title": "CoordinateOut"
+      },
+      "DayRuleIn": {
+        "properties": {
+          "weekday": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Weekday"
+          },
+          "open": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open"
+          },
+          "close": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Close"
+          },
+          "closed": {
+            "type": "boolean",
+            "title": "Closed",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "weekday"
+        ],
+        "title": "DayRuleIn",
+        "description": "FR-13 — **사용자 입력 영업시간** (BR-35). 외부에서 채우는 경로는 없다."
+      },
+      "DayRuleOut": {
+        "properties": {
+          "weekday": {
+            "type": "integer",
+            "title": "Weekday"
+          },
+          "open": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Open"
+          },
+          "close": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Close"
+          },
+          "closed": {
+            "type": "boolean",
+            "title": "Closed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekday"
+        ],
+        "title": "DayRuleOut"
+      },
+      "GenerationStep": {
+        "type": "string",
+        "enum": [
+          "DRAFTING",
+          "RESOLVING",
+          "ROUTING",
+          "OPTIMIZING",
+          "SCHEDULING",
+          "SAVING"
+        ],
+        "title": "GenerationStep"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "HealthOut"
+      },
+      "ImageRefOut": {
+        "properties": {
+          "thumbnail_url": {
+            "type": "string",
+            "title": "Thumbnail Url"
+          },
+          "link": {
+            "type": "string",
+            "title": "Link"
+          },
+          "source_title": {
+            "type": "string",
+            "title": "Source Title",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "thumbnail_url",
+          "link"
+        ],
+        "title": "ImageRefOut"
+      },
+      "ItemCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "latitude": {
+            "type": "number",
+            "maximum": 39.0,
+            "minimum": 33.0,
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "maximum": 132.0,
+            "minimum": 124.0,
+            "title": "Longitude"
+          },
+          "category_raw": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Raw"
+          },
+          "road_address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Road Address"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "stay_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 720.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stay Minutes"
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "latitude",
+          "longitude"
+        ],
+        "title": "ItemCreate",
+        "description": "FR-5 — 검색 결과에서 항목 추가."
+      },
+      "ItemPatch": {
+        "properties": {
+          "stay_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 720.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stay Minutes"
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memo"
+          },
+          "travel_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TravelMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "time_fixed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Fixed"
+          },
+          "fixed_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed Time"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ItemPatch",
+        "description": "FR-7, FR-11 — 항목 편집."
+      },
+      "ItemWarningOut": {
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/WarningType"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "detail"
+        ],
+        "title": "ItemWarningOut"
+      },
+      "ItineraryItemOut": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "place": {
+            "$ref": "#/components/schemas/PlaceOut"
+          },
+          "stay_minutes": {
+            "type": "integer",
+            "title": "Stay Minutes"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "arrival_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arrival At"
+          },
+          "departure_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Departure At"
+          },
+          "time_fixed": {
+            "type": "boolean",
+            "title": "Time Fixed",
+            "default": false
+          },
+          "fixed_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed Time"
+          },
+          "travel_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TravelMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memo"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/ItemWarningOut"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "place",
+          "stay_minutes",
+          "position"
+        ],
+        "title": "ItineraryItemOut"
+      },
+      "JobAccepted": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "trip_id": {
+            "type": "string",
+            "title": "Trip Id"
+          },
+          "state": {
+            "type": "string",
+            "const": "queued",
+            "title": "State"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id",
+          "trip_id",
+          "state"
+        ],
+        "title": "JobAccepted"
+      },
+      "JobState": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "running",
+          "succeeded",
+          "partial",
+          "failed"
+        ],
+        "title": "JobState"
+      },
+      "JobStatusOut": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "trip_id": {
+            "type": "string",
+            "title": "Trip Id"
+          },
+          "state": {
+            "$ref": "#/components/schemas/JobState"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GenerationStep"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "progress": {
+            "type": "number",
+            "title": "Progress"
+          },
+          "resolved_count": {
+            "type": "integer",
+            "title": "Resolved Count"
+          },
+          "unresolved_count": {
+            "type": "integer",
+            "title": "Unresolved Count"
+          },
+          "problem": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Problem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id",
+          "trip_id",
+          "state",
+          "progress",
+          "resolved_count",
+          "unresolved_count"
+        ],
+        "title": "JobStatusOut"
+      },
+      "LimitsOut": {
+        "properties": {
+          "max_trip_days": {
+            "type": "integer",
+            "title": "Max Trip Days"
+          },
+          "max_items_per_day": {
+            "type": "integer",
+            "title": "Max Items Per Day"
+          },
+          "max_items_per_trip": {
+            "type": "integer",
+            "title": "Max Items Per Trip"
+          }
+        },
+        "type": "object",
+        "required": [
+          "max_trip_days",
+          "max_items_per_day",
+          "max_items_per_trip"
+        ],
+        "title": "LimitsOut",
+        "description": "폼 검증 상한. 프론트가 숫자를 하드코딩하지 않도록 서버가 내려준다 (WBR-10)."
+      },
+      "OpeningHoursIn": {
+        "properties": {
+          "weekday_rules": {
+            "items": {
+              "$ref": "#/components/schemas/DayRuleIn"
+            },
+            "type": "array",
+            "maxItems": 7,
+            "title": "Weekday Rules"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "weekday_rules"
+        ],
+        "title": "OpeningHoursIn"
+      },
+      "OpeningHoursOut": {
+        "properties": {
+          "weekday_rules": {
+            "items": {
+              "$ref": "#/components/schemas/DayRuleOut"
+            },
+            "type": "array",
+            "title": "Weekday Rules",
+            "default": []
+          },
+          "entered_by_user": {
+            "type": "boolean",
+            "title": "Entered By User",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "OpeningHoursOut",
+        "description": "BR-35 — 사용자가 입력한 경우에만 존재한다(대개 `null`)."
+      },
+      "OptimizeIn": {
+        "properties": {
+          "anchor_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor Start"
+          },
+          "anchor_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor End"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "OptimizeIn",
+        "description": "FR-8 — 순서 최적화 제약 (BR-19)."
+      },
+      "PagedPlacesOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlaceOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "page",
+          "page_size",
+          "has_more"
+        ],
+        "title": "PagedPlacesOut"
+      },
+      "PlaceCategory": {
+        "type": "string",
+        "enum": [
+          "RESTAURANT",
+          "CAFE",
+          "ATTRACTION",
+          "MUSEUM",
+          "SHOPPING",
+          "ACCOMMODATION",
+          "OTHER"
+        ],
+        "title": "PlaceCategory"
+      },
+      "PlaceContentOut": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "title": "Place Id"
+          },
+          "highlights": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Highlights",
+            "default": []
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/BlogRefOut"
+            },
+            "type": "array",
+            "title": "Sources",
+            "default": []
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ImageRefOut"
+            },
+            "type": "array",
+            "title": "Images",
+            "default": []
+          },
+          "is_ai_summary": {
+            "type": "boolean",
+            "title": "Is Ai Summary",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "place_id"
+        ],
+        "title": "PlaceContentOut",
+        "description": "FR-20·21 / BR-40 — `sources` 가 3건 미만이면 `highlights` 는 반드시 빈 목록이다."
+      },
+      "PlaceOut": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "title": "Place Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "coordinate": {
+            "$ref": "#/components/schemas/CoordinateOut"
+          },
+          "category": {
+            "$ref": "#/components/schemas/PlaceCategory"
+          },
+          "road_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Road Address"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "category_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Raw"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "naver_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Naver Link"
+          },
+          "source": {
+            "$ref": "#/components/schemas/PlaceSource"
+          },
+          "resolved_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved From"
+          },
+          "match_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Score"
+          },
+          "opening_hours": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OpeningHoursOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "place_id",
+          "name",
+          "coordinate",
+          "category",
+          "source"
+        ],
+        "title": "PlaceOut"
+      },
+      "PlaceSource": {
+        "type": "string",
+        "enum": [
+          "NAVER_LOCAL",
+          "USER_MANUAL",
+          "MOCK"
+        ],
+        "title": "PlaceSource"
+      },
+      "QuotaUsageOut": {
+        "properties": {
+          "call_count": {
+            "type": "integer",
+            "title": "Call Count"
+          },
+          "error_count": {
+            "type": "integer",
+            "title": "Error Count"
+          },
+          "daily_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Limit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "call_count",
+          "error_count"
+        ],
+        "title": "QuotaUsageOut"
+      },
+      "ReadOnlyTripOut": {
+        "properties": {
+          "trip_id": {
+            "type": "string",
+            "title": "Trip Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "destination": {
+            "type": "string",
+            "title": "Destination"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "party_size": {
+            "type": "integer",
+            "title": "Party Size"
+          },
+          "style_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Style Tags",
+            "default": []
+          },
+          "day_start_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day Start Time"
+          },
+          "day_end_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day End Time"
+          },
+          "default_travel_mode": {
+            "$ref": "#/components/schemas/TravelMode"
+          },
+          "budget_level": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BudgetLevel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/TripDayOut"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "read_only": {
+            "type": "boolean",
+            "const": true,
+            "title": "Read Only",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "trip_id",
+          "title",
+          "destination",
+          "start_date",
+          "end_date",
+          "party_size",
+          "day_start_time",
+          "day_end_time",
+          "default_travel_mode",
+          "days"
+        ],
+        "title": "ReadOnlyTripOut",
+        "description": "BR-37 / DD-25 — 공유 조회 응답.\n\n🔴 `share_token` 을 포함하지 않는다. 열람자는 토큰을 재발급·폐기할 권한이 없다."
+      },
+      "ReadinessOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "modes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Modes"
+          },
+          "quota": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/QuotaUsageOut"
+            },
+            "type": "object",
+            "title": "Quota"
+          },
+          "circuits": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Circuits"
+          },
+          "database": {
+            "type": "boolean",
+            "title": "Database"
+          },
+          "map_client_key_configured": {
+            "type": "boolean",
+            "title": "Map Client Key Configured"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "modes",
+          "quota",
+          "circuits",
+          "database",
+          "map_client_key_configured"
+        ],
+        "title": "ReadinessOut"
+      },
+      "ReorderIn": {
+        "properties": {
+          "item_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 36
+            },
+            "type": "array",
+            "maxItems": 15,
+            "title": "Item Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "item_ids"
+        ],
+        "title": "ReorderIn"
+      },
+      "ResolveFailureCode": {
+        "type": "string",
+        "enum": [
+          "NO_SEARCH_RESULT",
+          "LOW_SIMILARITY",
+          "OUT_OF_REGION",
+          "CATEGORY_MISMATCH",
+          "INVALID_COORDINATE",
+          "SEARCH_UNAVAILABLE"
+        ],
+        "title": "ResolveFailureCode"
+      },
+      "RuntimeConfigOut": {
+        "properties": {
+          "map_client_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Map Client Key"
+          },
+          "modes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Modes"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/LimitsOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "map_client_key",
+          "modes",
+          "limits"
+        ],
+        "title": "RuntimeConfigOut",
+        "description": "개정 A-1 — `GET /api/config` 응답.\n\n🔴 **검색 API 키와 LLM 키는 절대 포함하지 않는다** (SEC-11).\n`map_client_key` 만 예외인데, 지도 SDK 특성상 브라우저에 노출될 수밖에 없고\n도메인 화이트리스트로 방어하기 때문이다 (CON-3)."
+      },
+      "ShareTokenOut": {
+        "properties": {
+          "share_token": {
+            "type": "string",
+            "title": "Share Token"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "share_token",
+          "url"
+        ],
+        "title": "ShareTokenOut"
+      },
+      "SuggestionsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlaceOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "SuggestionsOut"
+      },
+      "TravelMode": {
+        "type": "string",
+        "enum": [
+          "WALK",
+          "CAR",
+          "TRANSIT"
+        ],
+        "title": "TravelMode"
+      },
+      "TripDayOut": {
+        "properties": {
+          "day_index": {
+            "type": "integer",
+            "title": "Day Index"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ItineraryItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day_index",
+          "items"
+        ],
+        "title": "TripDayOut"
+      },
+      "TripMetaPatch": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "TripMetaPatch"
+      },
+      "TripOut": {
+        "properties": {
+          "trip_id": {
+            "type": "string",
+            "title": "Trip Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "destination": {
+            "type": "string",
+            "title": "Destination"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "party_size": {
+            "type": "integer",
+            "title": "Party Size"
+          },
+          "style_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Style Tags",
+            "default": []
+          },
+          "day_start_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day Start Time"
+          },
+          "day_end_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day End Time"
+          },
+          "default_travel_mode": {
+            "$ref": "#/components/schemas/TravelMode"
+          },
+          "budget_level": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BudgetLevel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/TripDayOut"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "unresolved": {
+            "items": {
+              "$ref": "#/components/schemas/UnresolvedOut"
+            },
+            "type": "array",
+            "title": "Unresolved",
+            "default": []
+          },
+          "share_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Share Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "trip_id",
+          "title",
+          "destination",
+          "start_date",
+          "end_date",
+          "party_size",
+          "day_start_time",
+          "day_end_time",
+          "default_travel_mode",
+          "days"
+        ],
+        "title": "TripOut"
+      },
+      "TripSpecIn": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "destination": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "Destination"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "party_size": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Party Size",
+            "default": 2
+          },
+          "style_tags": {
+            "items": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Style Tags",
+            "default": []
+          },
+          "day_start_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day Start Time",
+            "default": "09:00:00"
+          },
+          "day_end_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Day End Time",
+            "default": "21:00:00"
+          },
+          "default_travel_mode": {
+            "$ref": "#/components/schemas/TravelMode",
+            "default": "TRANSIT"
+          },
+          "budget_level": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BudgetLevel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "destination",
+          "start_date",
+          "end_date"
+        ],
+        "title": "TripSpecIn",
+        "description": "FR-1 — 여행 생성 입력."
+      },
+      "UnresolvedOut": {
+        "properties": {
+          "raw_name": {
+            "type": "string",
+            "title": "Raw Name"
+          },
+          "day_index": {
+            "type": "integer",
+            "title": "Day Index"
+          },
+          "category_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Hint"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "default": ""
+          },
+          "failure_code": {
+            "$ref": "#/components/schemas/ResolveFailureCode"
+          },
+          "best_candidate_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Candidate Name"
+          },
+          "best_match_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Match Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "raw_name",
+          "day_index",
+          "failure_code"
+        ],
+        "title": "UnresolvedOut",
+        "description": "FR-3 / BR-18 — 일정에 들어가지 못한 후보. 프론트가 \"확인 필요\"로 노출한다."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WarningType": {
+        "type": "string",
+        "enum": [
+          "OUTSIDE_OPENING_HOURS",
+          "FIXED_TIME_CONFLICT",
+          "DAY_OVERFLOW",
+          "ESTIMATED_TRAVEL_TIME"
+        ],
+        "title": "WarningType"
+      }
+    }
+  }
+}

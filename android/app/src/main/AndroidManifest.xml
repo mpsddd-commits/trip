@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--
+        위치 권한은 선언만 해 둔다. 실제 요청은 **웹이 requestLocation 을 보낼 때만** 한다 (ABR-26).
+        앱 첫 실행에 미리 묻지 않는다 — 맥락 없는 요청은 거부율이 높고,
+        거부가 앱 전체를 막아서는 안 된다.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!--
+        Android 11(API 30)+ 패키지 가시성.
+        ⚠️ 이 선언이 없으면 네이버지도가 **설치돼 있어도 "없다"고 판정**될 수 있다.
+        다만 실제 판정은 ActivityNotFoundException 으로 한다 (ABR-21) — 여기는 이중 안전장치다.
+    -->
+    <queries>
+        <package android:name="com.nhn.android.nmap" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="nmap" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Trip">
+
+        <!--
+            🔴 usesCleartextTraffic 을 여기에 두지 않는다 (ABR-04).
+               평문 허용은 debug 소스셋의 매니페스트가 network_security_config 로만 연다.
+        -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode|density|fontScale">
+            <!--
+                configChanges 를 넓게 잡는 이유:
+                화면 회전으로 액티비티가 재생성되면 WebView 가 파괴되고 페이지가 **처음부터 다시 로드**된다.
+                편집 중이던 일정 화면이 목록으로 튕긴다. 회전을 직접 처리해 SPA 상태를 지킨다.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

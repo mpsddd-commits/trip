@@ -1,0 +1,27 @@
+# 🔴 SEC-10 — 모든 버전을 여기서 **고정**한다. 모듈에서 버전을 직접 쓰지 않는다.
+#    동적 버전(+, latest.release)을 쓰지 않는다 — 빌드가 재현되지 않는다.
+[versions]
+agp = "8.7.3"
+kotlin = "2.0.21"
+coreKtx = "1.15.0"
+appcompat = "1.7.0"
+activity = "1.9.3"
+webkit = "1.12.1"
+constraintlayout = "2.2.0"
+junit = "4.13.2"
+json = "20240303"
+
+[libraries]
+androidx-core-ktx        = { group = "androidx.core",           name = "core-ktx",        version.ref = "coreKtx" }
+androidx-appcompat       = { group = "androidx.appcompat",      name = "appcompat",       version.ref = "appcompat" }
+androidx-activity        = { group = "androidx.activity",       name = "activity-ktx",    version.ref = "activity" }
+androidx-webkit          = { group = "androidx.webkit",         name = "webkit",          version.ref = "webkit" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+junit                    = { group = "junit",                   name = "junit",           version.ref = "junit" }
+# 단위 테스트에서 android.jar 의 스텁 JSONObject 대신 진짜 구현을 쓰기 위한 의존성.
+# 없으면 모든 JSON 테스트가 "not mocked" 로 죽는다.
+json                     = { group = "org.json",                name = "json",            version.ref = "json" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android      = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -1,0 +1,93 @@
+# trip — 로컬 배포 구성 (Q20=A, UD-8)
+#
+# 기동:  docker compose up -d --build
+# 접속:  http://127.0.0.1:8200
+#
+# ⚠️ 안드로이드 실기기 연동 시에만 .env 에서 BIND_HOST=0.0.0.0 으로 바꾸세요.
+#    그 상태에서는 같은 네트워크의 **누구나 인증 없이** 접근할 수 있습니다.
+
+name: trip # ID-15 — 기존 프로젝트(news, miniproject)와 완전 격리
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: trip-app:latest
+    container_name: trip-app
+
+    # ID-11 / CA-1 — 노출 범위는 이 매핑의 왼쪽이 결정한다.
+    #   기본값 127.0.0.1 : 로컬 브라우저 전용
+    #   0.0.0.0          : 안드로이드 에뮬레이터(10.0.2.2) / 실기기(LAN IP) 연동용
+    # 컨테이너 내부는 항상 0.0.0.0 에 바인딩한다 — 루프백에 묶으면 포트 포워딩이 동작하지 않는다.
+    ports:
+      - "${BIND_HOST:-127.0.0.1}:${PORT:-8200}:8200"
+
+    # 🔴 required: false 가 없으면 .env 가 없을 때 **기동 자체가 실패**한다.
+    #    FR-33 / I-10 은 "자격증명 없이 목 모드로 전 화면 동작" 을 요구하고
+    #    README 의 첫 실행 안내도 .env 없이 시작한다. 둘이 어긋나 있었다.
+    #    (Build and Test 에서 발견 — `docker compose up -d` 가
+    #     "env file .env not found" 로 즉시 죽었다.)
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      TZ: Asia/Seoul
+
+    # ID-7 / UD-10 — 바인드 마운트. 호스트에서 SQLite 파일과 로그를 바로 열 수 있다.
+    #
+    # 🔴 리눅스에서 최초 1회 필요한 작업이 있습니다:
+    #       sudo chown -R 10001:10001 data logs
+    #
+    #    이 컨테이너는 아래 `user: "10001:10001"` 로 돕니다. Dockerfile 이 이미지 안에서
+    #    /app/data 를 chown 하지만, **바인드 마운트가 그 위를 덮으므로 호스트 디렉터리의
+    #    소유자가 이깁니다.** 클론한 사용자(보통 uid 1000) 소유 그대로면 uid 10001 이
+    #    쓰지 못해 SQLite 생성이 실패하고 컨테이너가 죽습니다.
+    #
+    #    Windows·macOS 의 Docker Desktop 은 파일 공유 계층이 소유권을 무시하므로
+    #    이 문제가 드러나지 않습니다. **리눅스에서만 발생합니다.**
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+
+    # ID-6 — 침해 시 코드 변조를 막는다. 볼륨과 tmpfs 만 쓰기 가능.
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    user: "10001:10001"
+
+    # ID-5
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: "1.5"
+
+    # ID-13 / ND-14 — liveness 경로만 사용한다. 외부 API 를 호출하지 않으므로
+    #                 헬스체크가 일일 쿼터를 소모하지 않는다.
+    #                 python:slim 에는 curl 이 없어 인터프리터로 호출한다.
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import sys, urllib.request
+          try:
+              sys.exit(0 if urllib.request.urlopen("http://127.0.0.1:8200/api/health", timeout=3).status == 200 else 1)
+          except Exception:
+              sys.exit(1)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+    # ID-14 — 장기 보존은 볼륨의 파일 로그(90일)가 담당한다.
+    #         Docker 드라이버는 실시간 확인용이므로 디스크 폭주만 막는다.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    restart: unless-stopped

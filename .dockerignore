@@ -1,0 +1,30 @@
+# 빌드 컨텍스트에서 제외 — 이미지 크기와 빌드 시간을 줄인다
+
+.git/
+.gitignore
+aidlc-docs/
+README.md
+
+# 인증 정보는 이미지에 절대 넣지 않는다 (SEC-12). 런타임에 env 로 주입한다.
+.env
+.env.local
+
+# 볼륨 데이터
+data/
+logs/
+
+# 로컬 개발 산출물
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.hypothesis/
+**/node_modules/
+**/.venv/
+**/venv/
+web/dist/
+
+# 안드로이드는 별도 Dockerfile.build 로 처리한다 (ID-16)
+android/
+
+# 테스트는 이미지에 포함하지 않는다
+backend/tests/

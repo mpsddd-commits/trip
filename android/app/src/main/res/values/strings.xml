@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 🔴 사용자에게 보이는 문구는 전부 여기에 둔다. 코드에 문자열을 박지 않는다. -->
+<resources>
+    <string name="app_name">여행 일정</string>
+
+    <!-- 최초 로드 실패 (ABR-40) -->
+    <string name="error_offline_title">연결할 수 없습니다</string>
+    <string name="error_offline_body">여행 서버에 접속하지 못했습니다.\n서버가 켜져 있는지, 주소가 맞는지 확인해 주세요.</string>
+    <string name="error_retry">다시 시도</string>
+    <string name="error_address_label">접속 주소: %1$s</string>
+
+    <!-- 설정 오류 (ABR-02, ABR-03) -->
+    <string name="error_config_title">접속 주소가 설정되지 않았습니다</string>
+    <string name="error_config_body">이 앱은 빌드할 때 서버 주소를 지정해야 합니다.\n\ngradle assembleRelease -PreleaseBaseUrl=https://내서버주소</string>
+    <string name="error_config_invalid_body">설정된 접속 주소를 해석할 수 없습니다.\nhttp:// 또는 https:// 로 시작하는 주소여야 합니다.</string>
+
+    <!-- 토스트 -->
+    <string name="toast_back_to_exit">한 번 더 누르면 종료됩니다</string>
+    <string name="toast_map_failed">지도를 열 수 없습니다</string>
+    <string name="toast_browser_failed">브라우저를 열 수 없습니다</string>
+    <string name="toast_share_failed">공유할 수 있는 앱이 없습니다</string>
+    <string name="toast_download_started">내려받는 중입니다</string>
+    <string name="toast_download_fallback">앱에서 저장하지 못해 브라우저로 엽니다</string>
+    <string name="toast_download_failed">파일을 내려받지 못했습니다</string>
+
+    <string name="share_chooser_title">공유</string>
+    <string name="download_description">여행 일정 파일</string>
+</resources>

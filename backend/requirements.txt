@@ -1,0 +1,16 @@
+# u1-trip-backend runtime dependencies
+# SEC-10: 모든 의존성을 정확한 버전으로 고정한다 (범위 지정자 금지)
+# NOTE: 아래 버전은 알려진 안정 버전으로 고정한 것이며,
+#       Build & Test 단계의 `pip install` + `pip-audit` 실측으로 확정한다.
+
+fastapi==0.141.1
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+SQLAlchemy==2.0.36
+httpx==0.28.1
+
+# NOTE: `anthropic` SDK 는 의도적으로 사용하지 않는다.
+#   ① SDK 를 쓰면 서킷(L1)·세마포어(L2)·쿼터 계측(C29)·재시도(BR-47)를 우회한다.
+#   ② 의존성 1개 감소 = 공급망 표면 축소 (SEC-10).
+#   Claude API 는 BaseHttpClient 를 통해 직접 호출한다 (clients/anthropic_llm.py).

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    🔴 ABR-04 — debug 소스셋 전용 매니페스트.
+
+    평문 HTTP 허용은 **여기서만** 열린다. release 빌드는 이 파일을 병합하지 않으므로
+    플랫폼 기본 정책(targetSdk 28+ 평문 차단)이 그대로 유지된다.
+
+    참조하는 XML 은 app/build.gradle.kts 가 빌드 시 굽는다
+    (실기기 IP 를 -PcleartextHost 로 받기 위해).
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:networkSecurityConfig="@xml/network_security_config" />
+</manifest>

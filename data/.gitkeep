@@ -1,0 +1,3 @@
+# SQLite 볼륨 마운트 지점 (UD-10, ID-7)
+# trip.db / trip.db-wal / trip.db-shm 이 여기에 생성됩니다.
+# 백업은 scripts/backup-db.* 를 사용하세요 — 폴더 복사는 WAL 트랜잭션을 누락시킵니다 (ID-9).

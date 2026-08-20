@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    앱은 영속 상태를 갖지 않는다(도메인 문서 §3). 백업할 것이 없고,
+    WebView 의 로컬 캐시가 기기 밖으로 나가지 않도록 전부 제외한다 (SEC-09).
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+    </device-transfer>
+</data-extraction-rules>

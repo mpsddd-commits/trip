@@ -1,0 +1,52 @@
+{
+  "name": "trip-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "trip - 여행 일정 웹 프론트엔드 (u2-trip-web)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -b --noEmit",
+    "gen:api": "openapi-typescript ./openapi.json -o ./src/shared/api/generated.ts",
+    "gen:api:live": "openapi-typescript http://127.0.0.1:8200/api/openapi.json -o ./src/shared/api/generated.ts"
+  },
+  "//": [
+    "SEC-10: 모든 의존성을 정확한 버전으로 고정한다 (범위 지정자 ^ ~ 금지).",
+    "버전은 Build & Test 의 `npm ci` 실측으로 확정한다.",
+    "openapi-typescript@7.13.0 은 이미 실행으로 확인됨."
+  ],
+  "dependencies": {
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/sortable": "10.0.0",
+    "@dnd-kit/utilities": "3.2.2",
+    "@tanstack/query-async-storage-persister": "5.69.2",
+    "@tanstack/react-query": "5.69.2",
+    "@tanstack/react-query-persist-client": "5.69.2",
+    "idb-keyval": "6.2.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-router-dom": "7.18.2",
+    "zustand": "5.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.1.0",
+    "@testing-library/user-event": "14.5.2",
+    "@types/node": "22.10.5",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "@vitejs/plugin-react": "4.3.4",
+    "@vitest/coverage-v8": "2.1.8",
+    "fast-check": "3.23.2",
+    "jsdom": "25.0.1",
+    "msw": "2.7.0",
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.7.2",
+    "vite": "6.0.7",
+    "vitest": "2.1.8"
+  }
+}
