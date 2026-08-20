@@ -7,7 +7,7 @@ fastapi==0.141.1
 uvicorn[standard]==0.34.0
 pydantic==2.10.4
 pydantic-settings==2.7.0
-SQLAlchemy==2.0.36
+SQLAlchemy==2.0.52
 httpx==0.28.1
 
 # NOTE: `anthropic` SDK 는 의도적으로 사용하지 않는다.
