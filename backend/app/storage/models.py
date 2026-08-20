@@ -26,6 +26,45 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.types import TypeDecorator
+
+
+class UtcDateTime(TypeDecorator):
+    """항상 **타임존이 붙은 UTC** 를 돌려주는 DateTime.
+
+    🔴 왜 필요한가:
+       ``DateTime(timezone=True)`` 로 선언해도 **SQLite 는 타임존을 저장하지 않는다.**
+       SQLAlchemy 가 돌려주는 값은 tzinfo 가 없는 naive datetime 이다. 그러면
+
+         · aware 인 ``utcnow()`` 와 비교할 때 ``TypeError`` 가 나고
+         · ``isoformat()`` 이 오프셋 없는 문자열(``2026-09-10T00:00:00``)을 만든다.
+
+       두 번째가 특히 조용하다. 그 문자열을 받은 브라우저의 ``new Date()`` 는 이것을
+       **현지 시각**으로 해석하므로, KST 사용자에게는 일정 전체가 **9시간 어긋나** 보인다.
+       오류도 경고도 나지 않는다. 실제로 09:00 시작 일정이 00:00 으로 표시됐다.
+
+       컬럼마다 따로 막으면 새 컬럼이 생길 때 또 빠진다. 타입 하나로 처리한다.
+    """
+
+    impl = DateTime
+    cache_ok = True
+
+    def __init__(self) -> None:
+        super().__init__(timezone=True)
+
+    def process_bind_param(self, value: datetime | None, dialect: object) -> datetime | None:
+        if value is None:
+            return None
+        # 애플리케이션 코드는 항상 aware 값을 만든다(`utcnow()`).
+        # 혹시 naive 가 들어오면 UTC 로 간주한다 — 저장 규약이 UTC 이기 때문이다 (NFR-7).
+        if value.tzinfo is None:
+            return value
+        return value.astimezone(UTC).replace(tzinfo=None)
+
+    def process_result_value(self, value: datetime | None, dialect: object) -> datetime | None:
+        if value is None:
+            return None
+        return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
 
 
 def utcnow() -> datetime:
@@ -55,9 +94,9 @@ class TripRow(Base):
     budget_level: Mapped[str | None] = mapped_column(String(16), nullable=True)
     # BR-36 — trip_id 로부터 도출되지 않는 독립 난수
     share_token: Mapped[str | None] = mapped_column(String(43), nullable=True, unique=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+        UtcDateTime(), default=utcnow, onupdate=utcnow
     )
 
     days: Mapped[list["TripDayRow"]] = relationship(
@@ -128,7 +167,7 @@ class OpeningHoursRow(Base):
     )
     weekday_rules_json: Mapped[str] = mapped_column(Text, default="[]")
     entered_by_user: Mapped[bool] = mapped_column(Boolean, default=True)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow)
 
     place: Mapped[PlaceRow] = relationship(back_populates="opening_hours")
 
@@ -142,8 +181,8 @@ class ItineraryItemRow(Base):
     )
     place_id: Mapped[str] = mapped_column(String(36), ForeignKey("places.place_id"))
     position: Mapped[int] = mapped_column(Integer)
-    arrival_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    departure_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    arrival_at: Mapped[datetime | None] = mapped_column(UtcDateTime(), nullable=True)
+    departure_at: Mapped[datetime | None] = mapped_column(UtcDateTime(), nullable=True)
     stay_minutes: Mapped[int] = mapped_column(Integer, default=60)
     time_fixed: Mapped[bool] = mapped_column(Boolean, default=False)
     fixed_time: Mapped[str | None] = mapped_column(String(8), nullable=True)
@@ -204,7 +243,7 @@ class PlaceContentRow(Base):
     sources_json: Mapped[str] = mapped_column(Text, default="[]")
     images_json: Mapped[str] = mapped_column(Text, default="[]")
     is_ai_summary: Mapped[bool] = mapped_column(Boolean, default=True)
-    generated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    generated_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow)
 
     place: Mapped[PlaceRow] = relationship(back_populates="content")
 
@@ -223,11 +262,11 @@ class GenerationJobRow(Base):
     resolved_count: Mapped[int] = mapped_column(Integer, default=0)
     unresolved_count: Mapped[int] = mapped_column(Integer, default=0)
     problem_json: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+        UtcDateTime(), default=utcnow, onupdate=utcnow
     )
-    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(UtcDateTime(), nullable=True)
 
 
 class ExternalCacheRow(Base):
@@ -236,8 +275,8 @@ class ExternalCacheRow(Base):
     cache_key: Mapped[str] = mapped_column(String(64), primary_key=True)
     namespace: Mapped[str] = mapped_column(String(32), index=True)
     payload: Mapped[str] = mapped_column(Text)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    created_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow)
+    expires_at: Mapped[datetime] = mapped_column(UtcDateTime(), index=True)
 
 
 class ApiUsageRow(Base):
@@ -262,7 +301,7 @@ class AuditEventRow(Base):
     __tablename__ = "audit_events"
 
     event_id: Mapped[str] = mapped_column(String(36), primary_key=True)
-    occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    occurred_at: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow, index=True)
     event_type: Mapped[str] = mapped_column(String(32), index=True)
     correlation_id: Mapped[str] = mapped_column(String(64), default="-")
     subject_id: Mapped[str | None] = mapped_column(String(64), nullable=True)

@@ -1544,3 +1544,102 @@ UTF-8 BOM 이 없어 한글 주석이 cp949 로 잘못 해석되고 **구문 오
   (모듈 수준 `app` 을 제거했으므로 기존 안내로는 기동 불가였다)
 - "`.env` 를 만들고 시작" → **`.env` 없이 바로 기동** (Build and Test 의 `required: false` 반영)
 - "u1 만 있는 현재 상태" 등 옛 표현 정리
+
+---
+
+## 사용 전 점검 — 🔴 시간대 결함 발견·수정
+**Timestamp**: 2026-08-14T23:55:00Z
+**User Input**: "그럼 사용자인 저는 어떤부분을 추가하거나 실행해보면될까요?"
+**AI Response**: "'써보세요' 라고 말하기 전에 목 모드 생성을 실제로 돌려봤다가 **시각이 9시간 어긋나는 결함**을 발견했다."
+**Context**: OPERATIONS — 사용 안내 준비 중 검증
+
+### 🔴 결함 — API 응답의 시각에 타임존 오프셋이 없다
+
+목 모드로 AI 생성을 끝까지 돌려 결과를 확인하다 발견했다.
+`day_start_time = 09:00` 인데 응답의 `arrival_at` 이 `2026-09-10T00:00:00` 이었다.
+
+**원인**: Build and Test 결함 2번(캐시 만료 비교)과 **같은 뿌리**다.
+`DateTime(timezone=True)` 로 선언해도 **SQLite 는 타임존을 저장하지 않는다.**
+읽을 때 naive 로 돌아오고, 그 값의 `isoformat()` 은 오프셋 없는 문자열을 만든다.
+
+**영향**: 브라우저의 `new Date("2026-09-10T00:00:00")` 은 이를 **현지 시각**으로 해석한다.
+KST 사용자에게 **일정 전체가 9시간 어긋나** 보인다 — 09:00 시작 일정이 00:00 으로 표시됐다.
+오류도 경고도 나지 않는다. 서버 계산은 정확했고 **직렬화 단계에서만** 어긋났다.
+
+**당시 Build and Test 가 놓친 이유**: `CacheRepository.get()` 만 `_as_utc` 로 고쳤다.
+같은 문제를 가진 컬럼이 **12개** 더 있었는데 그 경로는 예외를 내지 않고 조용히 통과했다.
+
+### 조치 — 컬럼별이 아니라 타입 하나로
+`app/storage/models.py` 에 `UtcDateTime(TypeDecorator)` 를 추가하고
+`DateTime(timezone=True)` 를 쓰던 **12개 컬럼 전부** 교체했다.
+- `process_bind_param`: aware → UTC 로 변환해 저장
+- `process_result_value`: naive → UTC 를 붙여 반환
+
+컬럼마다 막으면 새 컬럼이 생길 때 또 빠진다. 타입에서 한 번에 처리한다.
+
+### 검증
+- 단위 테스트 **239 passed** (신규 회귀 테스트 5건 포함), 전체 3회 반복 실행 모두 통과
+- 이미지 재빌드 후 실제 API 왕복: `arrival_at = "2026-09-10T00:00:00Z"` → **KST 09:00** ✅
+
+### ⚠️ 간헐적 실패 1건 (미해결, 기록만)
+`test_api_generation.py::test_job_status_exposes_unresolved_count` 가
+전체 실행 4회 중 **1회** 실패했다. 단독 실행과 이후 3회 연속 전체 실행은 모두 통과.
+비동기 job 러너의 타이밍 경합으로 보인다. **이번 변경과 무관**하며 재현되지 않아 원인 미확정.
+CI 를 붙이면 다시 드러날 수 있으므로 여기에 남긴다.
+
+### ⚠️ 별도 관찰 — 3일 일정의 마지막 날이 비어 있음
+목 모드 생성에서 2박3일 중 Day 3 에 항목이 배정되지 않았다.
+목 LLM 데이터의 한계인지 배분 로직 문제인지 **미확인**. 실 API 키로 확인이 필요하다.
+
+---
+
+## CI/CD 구성 — GitHub Actions
+**Timestamp**: 2026-08-15T00:20:00Z
+**User Input**: "만들어주세요"
+**AI Response**: "워크플로 3종 + Dependabot 작성. **작성 직후 contract 잡이 실제 드리프트를 잡았다.**"
+**Context**: OPERATIONS — CI/CD
+
+### 산출물
+| 파일 | 트리거 | 내용 |
+|---|---|---|
+| `.github/workflows/ci.yml` | push · PR | backend(pytest 239) · web(tsc+vitest 79+번들 크기) · **contract** · docker(빌드+기동) |
+| `.github/workflows/android.yml` | `android/**` · `web/src/shared/bridge/**` 변경 시 | JUnit 47 · assembleDebug · **release 누출 검증** |
+| `.github/workflows/security.yml` | push · PR · **주간 cron** | pip-audit(런타임 strict) · npm audit · 다이제스트 드리프트 · SBOM |
+| `.github/dependabot.yml` | 주간/월간 | pip · npm · gradle · docker · actions (관련 패키지 그룹핑) |
+
+### 🔴 contract 잡이 만들어지자마자 실제 드리프트를 잡았다
+
+`ci.yml` 의 `contract` 잡은 백엔드 OpenAPI 로 TS 타입을 재생성해 커밋된 파일과 대조한다.
+**로컬에서 검증해 보니 곧바로 차이가 나왔다.**
+
+원인: Build and Test 에서 fastapi 를 0.115.6 → 0.141.1 로 올렸는데,
+0.141 은 `ValidationError` 스키마에 `input` · `ctx` 필드를 추가로 내보낸다.
+`generated.ts` 는 옛 스키마 기준이라 **낡아 있었다.**
+
+영향 자체는 작다(u1 은 RFC 9457 문제 상세를 쓰므로 이 타입을 노출하지 않는다).
+그러나 **이것이 정확히 이 잡이 막으려는 실패 유형**이다 —
+낡은 타입으로도 `tsc` 는 통과하고, 런타임에서만 어긋난다.
+
+조치: `openapi.json` · `generated.ts` 재생성 후 커밋.
+검증: `tsc` 통과 · Vitest 79건 통과 · 빌드 성공 · 재실행 시 차이 0.
+
+### 설계 판단
+- **안드로이드는 경로 필터로 분리**했다. SDK 설치가 무거워 매 푸시마다 돌릴 이유가 없다.
+  다만 `web/src/shared/bridge/**` 변경도 트리거에 넣었다 — 브리지 계약(UD-4 계약 ②)이
+  바뀌면 u2·u3 양쪽을 확인해야 하기 때문이다.
+- **다이제스트 드리프트 잡은 `continue-on-error: true`** 로 뒀다.
+  상위 이미지 갱신은 실패시킬 일이 아니라 사람이 판단할 일이다.
+- **Dependabot 자동 머지는 넣지 않았다.** fastapi 0.115 → 0.141 처럼 큰 점프가
+  필요했던 전례가 있고, 그때 전 테스트를 돌려 확인했다.
+- **간헐적 실패를 숨기는 재시도를 넣지 않았다.**
+  `test_job_status_exposes_unresolved_count` 는 CI 에서 다시 드러나야 한다.
+- 안드로이드는 러너의 사전 설치 SDK 를 쓴다(로컬은 `Dockerfile.build`).
+  같은 것을 두 방식으로 검증하는 셈이라 컨테이너 경로가 깨지면 로컬에서 드러난다.
+
+### android.yml 의 release 누출 검증
+`generateReleaseBuildConfig` · `processReleaseMainManifest` 를 돌려 확인한다.
+- release `BASE_URL` 이 비어 있는가 (ABR-02)
+- release 매니페스트에 `networkSecurityConfig` 가 **없는가** (ABR-04)
+- `usesCleartextTraffic` 이 없는가
+
+Build and Test 에서 수동으로 확인했던 항목을 자동화했다.

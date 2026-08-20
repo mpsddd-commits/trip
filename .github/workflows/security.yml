@@ -1,0 +1,115 @@
+name: Security
+
+# SEC-10 은 **blocking** 확장입니다. 런타임 의존성에 알려진 취약점이 있으면 통과시키지 않습니다.
+#
+# 실제로 Build and Test 에서 starlette 에 CVE 7건이 발견돼 fastapi 를 함께 올렸고,
+# react-router-dom 에서도 high 3건이 나왔습니다. 방치하면 다시 쌓입니다.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # 매주 월요일 09:00 KST (= 일요일 00:00 UTC)
+    # 🔴 정기 실행이 핵심입니다. 코드를 안 건드려도 취약점은 새로 공개됩니다.
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python 의존성 (pip-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pip-audit
+
+      - name: 런타임 의존성 — 취약점이 있으면 실패
+        working-directory: backend
+        run: pip-audit --progress-spinner off --requirement requirements.txt --strict
+
+      - name: 개발 의존성 — 보고만 하고 통과
+        working-directory: backend
+        # 개발 의존성은 배포물에 들어가지 않습니다. 다만 방치하지 않도록 로그에 남깁니다.
+        continue-on-error: true
+        run: pip-audit --progress-spinner off --requirement requirements-dev.txt
+
+  node:
+    name: Node 의존성 (npm audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - working-directory: web
+        run: npm ci
+
+      - name: 런타임 의존성 — high 이상이면 실패
+        working-directory: web
+        run: npm audit --omit=dev --audit-level=high
+
+  digest:
+    name: 베이스 이미지 다이제스트 드리프트
+    runs-on: ubuntu-latest
+    # 🔴 다이제스트 고정은 **재현성**을 위한 것이지 "영원히 안 바꾸겠다"는 뜻이 아닙니다.
+    #    고정하지 않으면 같은 태그가 조용히 다른 내용으로 바뀌고,
+    #    고정만 하고 갱신하지 않으면 알려진 취약점을 그대로 안고 갑니다.
+    #
+    # 이 잡은 **실패시키지 않습니다.** 상위 이미지 갱신은 사람이 판단할 일입니다.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: 고정값과 현재 태그 비교
+        run: |
+          DRIFT=0
+          for IMAGE in node:24-alpine python:3.12-slim eclipse-temurin:17-jdk-noble; do
+            NAME="${IMAGE%%:*}"
+            CURRENT=$(docker buildx imagetools inspect "$IMAGE" --format '{{.Manifest.Digest}}' 2>/dev/null || echo "")
+            PINNED=$(grep -ho "${NAME}:[^@ ]*@sha256:[0-9a-f]*" Dockerfile android/Dockerfile.build 2>/dev/null \
+                     | head -1 | sed 's/.*@//')
+
+            if [ -z "$PINNED" ]; then
+              echo "::warning::$IMAGE — Dockerfile 에서 고정값을 찾지 못했습니다"
+            elif [ "$CURRENT" = "$PINNED" ]; then
+              echo "$IMAGE : 최신"
+            else
+              DRIFT=1
+              echo "::warning::$IMAGE — 상위 이미지가 갱신됐습니다"
+              echo "  고정 $PINNED"
+              echo "  최신 $CURRENT"
+            fi
+          done
+
+          if [ "$DRIFT" -eq 1 ]; then
+            echo "::notice::변경 내역을 확인한 뒤 Dockerfile 의 다이제스트를 교체하고 재빌드·재테스트하세요."
+          fi
+
+  sbom:
+    name: SBOM 생성
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python scripts/generate-sbom.py sbom.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+          if-no-files-found: error

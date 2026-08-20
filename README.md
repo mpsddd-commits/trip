@@ -290,6 +290,25 @@ docker compose down && rm -rf data/* logs/*  # 완전 초기화
 
 ---
 
+## CI (GitHub Actions)
+
+| 워크플로 | 언제 | 무엇을 |
+|---|---|---|
+| [`ci.yml`](.github/workflows/ci.yml) | push · PR | 백엔드 239 · 웹 79 테스트 · **API 계약 동기화** · 컨테이너 빌드·기동 |
+| [`android.yml`](.github/workflows/android.yml) | `android/` 또는 브리지 계약 변경 시 | JUnit 47 · APK 빌드 · **release 에 개발 주소·평문 허용이 새는지** |
+| [`security.yml`](.github/workflows/security.yml) | push · PR · **매주 월요일** | `pip-audit` · `npm audit` · 다이제스트 드리프트 · SBOM |
+| [`dependabot.yml`](.github/dependabot.yml) | 주간/월간 | 의존성 갱신 PR (관련 패키지 묶음) |
+
+**`ci.yml` 의 `contract` 잡이 이 저장소에서 가장 중요합니다.** 백엔드 API 를 바꾸고
+TS 타입 재생성을 잊으면, 웹은 **낡은 타입으로 컴파일에 성공**하고 런타임에서만 깨집니다.
+이 잡이 실제 OpenAPI 스키마로 타입을 다시 만들어 커밋된 파일과 대조합니다.
+실패하면 `cd web && npm run gen:api:live` 후 커밋하세요.
+
+> 🔴 `android.yml` 이 통과해도 **앱이 동작한다는 뜻은 아닙니다.**
+> 실기기 체크리스트 8항목을 대체하지 못합니다.
+
+---
+
 ## 라이선스
 
 **GNU General Public License v3.0** — 전문은 [`LICENSE`](LICENSE) 에 있습니다.

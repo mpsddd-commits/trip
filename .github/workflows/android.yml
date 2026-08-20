@@ -1,0 +1,106 @@
+name: Android
+
+# 안드로이드는 SDK 설치가 무거워 **관련 변경이 있을 때만** 돕니다.
+#
+# 🔴 이 워크플로가 검증하는 것은 컴파일·패키징·단위 테스트까지입니다.
+#    WebView 로딩 · 지도 인텐트 · 다운로드 · 위치 권한은 **실기기에서만** 확인됩니다.
+#    android/README.md 의 "실기기 확인 체크리스트 8항목" 을 대체하지 못합니다.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "android/**"
+      - ".github/workflows/android.yml"
+      # 🔴 브리지 계약이 바뀌면 안드로이드도 확인해야 합니다 (UD-4 계약 ②).
+      #    u2 의 protocol.ts 와 u3 의 BridgeProtocol.kt 는 같은 문서의 복제본입니다.
+      - "web/src/shared/bridge/**"
+      - "aidlc-docs/inception/application-design/unit-of-work-dependency.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - "android/**"
+      - ".github/workflows/android.yml"
+      - "web/src/shared/bridge/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: u3 안드로이드 (JUnit + assembleDebug)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Android SDK 준비
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platforms;android-35 build-tools;35.0.0 platform-tools"
+
+      - name: Gradle 준비
+        # 🔴 gradle-wrapper.jar 는 바이너리라 저장소에 두지 않습니다.
+        #    여기서 Gradle 배포판을 직접 설치합니다 (로컬은 Dockerfile.build 가 같은 일을 합니다).
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: 단위 테스트 (구조 테스트 포함)
+        working-directory: android
+        run: gradle --no-daemon testDebugUnitTest
+
+      - name: APK 빌드
+        working-directory: android
+        run: gradle --no-daemon assembleDebug
+
+      - name: 릴리스 설정 검증
+        working-directory: android
+        run: |
+          # 🔴 ABR-02 / ABR-04 — release 빌드에 개발 주소나 평문 허용이 새면 안 됩니다.
+          gradle --no-daemon generateReleaseBuildConfig processReleaseMainManifest -q
+
+          BC=$(find app/build -name BuildConfig.java -path '*release*' | head -1)
+          if grep -q 'BASE_URL = ""' "$BC"; then
+            echo "release BASE_URL 이 비어 있습니다 (의도된 동작)"
+          else
+            echo "::error::release BuildConfig 에 주소가 박혀 있습니다"
+            grep BASE_URL "$BC"; exit 1
+          fi
+
+          MF=$(find app/build/intermediates/merged_manifest/release -name AndroidManifest.xml | head -1)
+          if grep -q 'networkSecurityConfig' "$MF"; then
+            echo "::error::release 매니페스트에 평문 허용 설정이 새어 나갔습니다 (ABR-04)"
+            exit 1
+          fi
+          if grep -q 'usesCleartextTraffic' "$MF"; then
+            echo "::error::release 매니페스트에 usesCleartextTraffic 이 있습니다"
+            exit 1
+          fi
+          echo "release 는 평문 전면 차단 상태입니다"
+
+      - name: 산출물 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/reports/tests/testDebugUnitTest
+          if-no-files-found: warn
+
+      - name: 실기기 확인 안내
+        if: success()
+        run: |
+          echo "::notice::빌드 성공 = 컴파일·패키징 가능. **동작 보증이 아닙니다.**"
+          echo "::notice::평문 차단·다운로드 무시·window.open 무시·위치 미회신은 전부 컴파일을 통과합니다."
+          echo "::notice::APK 를 설치해 android/README.md 의 체크리스트 8항목을 확인하세요."

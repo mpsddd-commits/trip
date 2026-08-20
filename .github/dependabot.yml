@@ -1,0 +1,71 @@
+# 의존성 갱신 자동 제안 (SEC-10 보완)
+#
+# security.yml 은 "지금 취약한가" 를 봅니다. Dependabot 은 "새 버전이 나왔는가" 를 봅니다.
+# 둘은 다릅니다 — 취약점이 공개되기 전에 이미 고쳐진 버전이 나와 있는 경우가 많습니다.
+#
+# 🔴 자동 머지는 하지 않습니다. 이 프로젝트에서 fastapi 0.115 → 0.141 처럼
+#    메이저에 가까운 점프가 필요했던 적이 있고, 그때 전 테스트를 돌려 확인했습니다.
+
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /backend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # 관련 패키지를 묶어야 버전 상한 충돌로 실패하는 PR 이 줄어듭니다.
+      # (starlette 만 올리면 fastapi 의 상한에 걸립니다 — 실제로 겪은 일입니다.)
+      fastapi-stack:
+        patterns:
+          - fastapi
+          - starlette
+          - pydantic*
+          - uvicorn*
+      test-tools:
+        patterns:
+          - pytest*
+          - hypothesis
+          - pip-audit
+
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      react:
+        patterns:
+          - react
+          - react-dom
+          - react-router*
+          - "@types/react*"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+      build-tools:
+        patterns:
+          - vite
+          - vitest
+          - typescript
+          - "@vitejs/*"
+
+  - package-ecosystem: gradle
+    directory: /android
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
