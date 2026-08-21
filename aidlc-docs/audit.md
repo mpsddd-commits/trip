@@ -1643,3 +1643,61 @@ CI 를 붙이면 다시 드러날 수 있으므로 여기에 남긴다.
 - `usesCleartextTraffic` 이 없는가
 
 Build and Test 에서 수동으로 확인했던 항목을 자동화했다.
+
+---
+
+## CI 최초 실행 결과 및 수정
+**Timestamp**: 2026-08-15T01:10:00Z
+**User Input**: "푸시 끝"
+**Context**: OPERATIONS — CI 검증
+
+### 결과
+| 워크플로 | 결과 |
+|---|---|
+| CI (backend 239 · web 79 · contract · docker) | ✅ success |
+| Security (pip-audit · npm audit · digest · SBOM) | ✅ success |
+| Android | ❌ failure — `릴리스 설정 검증` 스텝 |
+
+단위 테스트 47건과 `assembleDebug` 는 통과했다. 실패한 것은 **내가 새로 추가한 검증 스텝**이다.
+
+### 🔴 원인 — 검사가 자기 문서에 걸렸다
+
+병합된 AndroidManifest 는 **XML 주석을 그대로 보존한다.**
+`main/AndroidManifest.xml` 에 다음 설명 주석이 있다:
+
+    🔴 usesCleartextTraffic 을 여기에 두지 않는다 (ABR-04).
+
+`grep -q 'usesCleartextTraffic' "$MF"` 가 이 주석을 잡아 실패시켰다.
+release 매니페스트에 실제 위반은 없었다 (`networkSecurityConfig` 0건, 평문 허용 없음).
+
+**이번 세션에서 같은 유형이 세 번째다.**
+① u2 `design-rules.test.ts` — 주석의 금지 패턴 (오탐 4건)
+② u3 `StructureTest` — 매니페스트 주석 + **로그 문자열**의 `@JavascriptInterface`
+③ 이번 — 병합 매니페스트 주석
+
+교훈: 소스를 문자열로 검사하는 규칙은 **주석·문자열 리터럴에서 반드시 오탐이 난다.**
+검사 대상을 "맨 문자열" 이 아니라 **구문적으로 의미 있는 형태**로 좁혀야 한다.
+
+### 조치
+`usesCleartextTraffic="true"` / `networkSecurityConfig=` 처럼 **속성 형태**로만 찾는다.
+`=` 가 포함되므로 설명 주석은 걸리지 않고, 값까지 보므로
+AGP 가 넣는 `usesCleartextTraffic="false"`(정상)를 위반으로 오인하지 않는다.
+외부 도구(python3 등) 의존성도 없앴다 — 빌드 이미지에는 python3 이 없다.
+
+`find ... | head -1` 도 `find ... -print -quit` 로 바꾸고,
+BuildConfig·Manifest 를 찾지 못한 경우 명확한 오류를 내도록 했다.
+
+### 검증 — 깨끗한 체크아웃 + 음성 테스트
+저장소를 새로 clone 해 빌드 산출물이 없는 상태에서 검증했다.
+
+| 시나리오 | 기대 | 실제 |
+|---|---|---|
+| 정상 상태 | 통과 | ✅ 종료코드 0 |
+| `gradle.properties` 에 release 주소를 박음 | 실패 | ✅ 종료코드 1, "주소가 박혀 있습니다" |
+| main 매니페스트에 `usesCleartextTraffic="true"` 추가 | 실패 | ✅ 종료코드 1, "평문 HTTP 를 전면 허용합니다" |
+| 원상복구 | 통과 | ✅ 종료코드 0 |
+
+⚠️ 첫 음성 테스트는 **잘못 설계했다.** 병합 산출물을 직접 조작했는데
+스텝이 gradle 을 다시 돌려 조작을 덮어썼고, 세 경우 모두 종료코드 0 이 나왔다.
+검사가 무력한 줄 알았으나, 실제로는 **커밋된 설정을 기준으로 재생성해 검사**하는
+올바른 동작이었다. 소스(`gradle.properties`, 매니페스트)를 고치는 방식으로 다시 테스트해 확인했다.

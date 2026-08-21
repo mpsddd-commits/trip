@@ -69,24 +69,52 @@ jobs:
           # 🔴 ABR-02 / ABR-04 — release 빌드에 개발 주소나 평문 허용이 새면 안 됩니다.
           gradle --no-daemon generateReleaseBuildConfig processReleaseMainManifest -q
 
-          BC=$(find app/build -name BuildConfig.java -path '*release*' | head -1)
+          BC=$(find app/build -name BuildConfig.java -path '*release*' -print -quit)
+          if [ -z "$BC" ]; then
+            echo "::error::release BuildConfig.java 를 찾지 못했습니다"
+            exit 1
+          fi
+          echo "BuildConfig: $BC"
+
           if grep -q 'BASE_URL = ""' "$BC"; then
-            echo "release BASE_URL 이 비어 있습니다 (의도된 동작)"
+            echo "release BASE_URL 이 비어 있습니다 (의도된 동작 — ABR-02)"
           else
             echo "::error::release BuildConfig 에 주소가 박혀 있습니다"
-            grep BASE_URL "$BC"; exit 1
+            grep BASE_URL "$BC"
+            exit 1
           fi
 
-          MF=$(find app/build/intermediates/merged_manifest/release -name AndroidManifest.xml | head -1)
-          if grep -q 'networkSecurityConfig' "$MF"; then
-            echo "::error::release 매니페스트에 평문 허용 설정이 새어 나갔습니다 (ABR-04)"
+          MF=$(find app/build/intermediates/merged_manifest/release -name AndroidManifest.xml -print -quit)
+          if [ -z "$MF" ]; then
+            echo "::error::release 병합 매니페스트를 찾지 못했습니다"
             exit 1
           fi
-          if grep -q 'usesCleartextTraffic' "$MF"; then
-            echo "::error::release 매니페스트에 usesCleartextTraffic 이 있습니다"
+          echo "Manifest: $MF"
+
+          # 🔴 **속성 형태**로만 찾습니다. 맨 문자열로 찾으면 안 됩니다.
+          #
+          #    병합된 매니페스트는 주석을 그대로 보존합니다.
+          #    main/AndroidManifest.xml 에 "usesCleartextTraffic 을 여기에 두지 않는다" 라는
+          #    설명 주석이 있어서, 그냥 grep 하면 **자기 문서에 자기가 걸립니다.**
+          #    실제로 첫 CI 실행이 이렇게 실패했습니다.
+          #    (u2 의 design-rules.test.ts, u3 의 StructureTest 에서도 같은 유형을 겪었습니다.)
+          #
+          #    `=` 를 포함한 속성 형태를 찾으면 주석은 걸리지 않고, 외부 도구도 필요 없습니다.
+          #    값도 봅니다 — AGP 가 `usesCleartextTraffic="false"` 를 넣는 것은 정상이고,
+          #    문제가 되는 것은 `="true"` 뿐입니다.
+
+          if grep -q 'networkSecurityConfig=' "$MF"; then
+            echo "::error::release 매니페스트에 networkSecurityConfig 가 새어 나갔습니다 (ABR-04)"
+            grep -o 'networkSecurityConfig="[^"]*"' "$MF"
             exit 1
           fi
-          echo "release 는 평문 전면 차단 상태입니다"
+
+          if grep -q 'usesCleartextTraffic="true"' "$MF"; then
+            echo "::error::release 매니페스트가 평문 HTTP 를 전면 허용합니다 (ABR-04)"
+            exit 1
+          fi
+
+          echo "release 는 평문 전면 차단 상태입니다 (networkSecurityConfig 없음, 평문 허용 없음)"
 
       - name: 산출물 업로드
         if: always()
