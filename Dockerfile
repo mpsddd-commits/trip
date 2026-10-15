@@ -16,7 +16,7 @@
 # ID-20 / SEC-10 — 베이스 이미지를 **다이제스트로 고정**한다 (Build & Test I-2 에서 실측).
 #   태그는 같은 이름으로 다른 내용이 올 수 있다. 다이제스트는 그럴 수 없다.
 #   갱신 절차: docker buildx imagetools inspect node:24-alpine --format '{{.Manifest.Digest}}'
-FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS web-build
+FROM node:26-alpine@sha256:aadf416b2cdce311a8811ba3f0608a61b77dbf997500e2eafe781b51f6a0b019 AS web-build
 
 WORKDIR /build
 
