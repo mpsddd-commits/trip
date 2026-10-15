@@ -35,7 +35,7 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # ID-20 / SEC-10 — 다이제스트 고정 (위와 같은 이유).
 #   갱신 절차: docker buildx imagetools inspect python:3.12-slim --format '{{.Manifest.Digest}}'
-FROM python:3.12-slim@sha256:2c941e860699f878900b0edc2403613c234d4b32eda3cc9fa7036991a2a63c4a AS runtime
+FROM python:3.14-slim@sha256:ce40764625a4ff50df3548277632e7f96c4e77fe75fa848aae9885476e7df5a4 AS runtime
 
 # ID-19 — 읽기 전용 루트 FS 에서 .pyc 쓰기 시도를 없앤다
 ENV PYTHONDONTWRITEBYTECODE=1 \
